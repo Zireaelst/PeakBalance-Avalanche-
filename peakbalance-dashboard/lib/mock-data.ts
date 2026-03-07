@@ -1,0 +1,265 @@
+import type {
+    Portfolio,
+    AgentDecision,
+    OraclePayment,
+    TradeRecord,
+    AgentStatus,
+    Constraints,
+    ReputationData,
+    TickerItem,
+} from '@/types';
+
+// ═══ MOCK DATA — Realistic PeakBalance values ═══
+
+const NOW = Date.now();
+const HOUR = 3600_000;
+const MIN = 60_000;
+
+export const MOCK_PORTFOLIO: Portfolio = {
+    avaxBalance: 68.42,
+    usdcBalance: 2475.30,
+    avaxValueUSD: 2531.54,    // 68.42 × $37.00
+    usdcValueUSD: 2475.30,
+    totalValueUSD: 5006.84,
+    avaxPct: 50.56,
+    usdcPct: 49.44,
+    pnl24h: 127.43,
+    pnl24hPct: 2.61,
+    peakValue: 5150.00,
+};
+
+export const MOCK_AGENT_STATUS: AgentStatus = {
+    isActive: true,
+    isPaused: false,
+    lastCheck: NOW - 42_000,
+    nextCheck: NOW + 18_000,
+    agentId: 1,
+    agentAddress: '0x7f3a9bC4E21d8A5c6B0F2e7D9f4a1b3E8c6D5a2F',
+    uptime: 172800,
+    consecutiveFailures: 0,
+};
+
+export const MOCK_CONSTRAINTS: Constraints = {
+    maxTradeSizePct: 5,
+    maxDailyTrades: 10,
+    currentDailyTrades: 3,
+    stopLossThreshold: 10,
+    currentDrawdown: 2.78,
+    driftThreshold: 5,
+    currentDrift: 0.56,
+    whitelistedProtocols: ['Trader Joe v2.1', 'Aave V3', 'Benqi'],
+};
+
+export const MOCK_DECISIONS: AgentDecision[] = [
+    {
+        id: 'd-001',
+        timestamp: NOW - 42_000,
+        type: 'HOLD',
+        message: 'Drift 0.56% below threshold (5%). No action required.',
+        price: 37.00,
+    },
+    {
+        id: 'd-002',
+        timestamp: NOW - 15 * MIN,
+        type: 'ORACLE',
+        message: 'Fetched AVAX/USD price via Chainlink. x402 payment settled.',
+        price: 37.02,
+    },
+    {
+        id: 'd-003',
+        timestamp: NOW - 1.2 * HOUR,
+        type: 'REBALANCE',
+        message: 'Drift 6.2% exceeded threshold. Sold 4.8 AVAX → 177.60 USDC via Trader Joe.',
+        price: 37.00,
+        txHash: '0x7f3a9bC4E21d8A5c6B0F2e7D9f4a1b3E8c6D5a2F1234567890abcdef',
+    },
+    {
+        id: 'd-004',
+        timestamp: NOW - 2.5 * HOUR,
+        type: 'ORACLE',
+        message: 'Fetched AVAX/USD price via Pyth Network. x402 payment settled.',
+        price: 36.85,
+    },
+    {
+        id: 'd-005',
+        timestamp: NOW - 3.1 * HOUR,
+        type: 'HOLD',
+        message: 'Drift 3.2% below threshold. Portfolio balanced within tolerance.',
+        price: 36.85,
+    },
+    {
+        id: 'd-006',
+        timestamp: NOW - 5 * HOUR,
+        type: 'REBALANCE',
+        message: 'Drift 5.8% exceeded threshold. Bought 3.2 AVAX with 116.48 USDC via Trader Joe.',
+        price: 36.40,
+        txHash: '0xaB3c4D5e6F7a8B9c0D1e2F3a4B5c6D7e8F9a0B1c2D3e4F5a6B7c8D9e0F1a2B',
+    },
+    {
+        id: 'd-007',
+        timestamp: NOW - 8 * HOUR,
+        type: 'ERROR',
+        message: 'Oracle timeout: Chainlink feed stale (>120s). Retrying with Pyth.',
+        price: 36.20,
+    },
+    {
+        id: 'd-008',
+        timestamp: NOW - 12 * HOUR,
+        type: 'HOLD',
+        message: 'Drift 1.1% below threshold. Markets stable.',
+        price: 36.15,
+    },
+];
+
+export const MOCK_ORACLE_PAYMENTS: OraclePayment[] = [
+    {
+        id: 'op-001',
+        timestamp: NOW - 15 * MIN,
+        txHash: '0x7f3a9bC4...8c6D5a2F',
+        amountAVAX: 0.00027,
+        amountUSD: 0.01,
+        endpoint: 'chainlink/avax-usd',
+        status: 'SUCCESS',
+    },
+    {
+        id: 'op-002',
+        timestamp: NOW - 2.5 * HOUR,
+        txHash: '0xaB3c4D5e...0F1a2B3c',
+        amountAVAX: 0.00027,
+        amountUSD: 0.01,
+        endpoint: 'pyth/avax-usd',
+        status: 'SUCCESS',
+    },
+    {
+        id: 'op-003',
+        timestamp: NOW - 5 * HOUR,
+        txHash: '0x1D2e3F4a...9c0D1e2F',
+        amountAVAX: 0.00027,
+        amountUSD: 0.01,
+        endpoint: 'chainlink/avax-usd',
+        status: 'SUCCESS',
+    },
+    {
+        id: 'op-004',
+        timestamp: NOW - 8 * HOUR,
+        txHash: '0x4B5c6D7e...3a4B5c6D',
+        amountAVAX: 0.00027,
+        amountUSD: 0.01,
+        endpoint: 'chainlink/avax-usd',
+        status: 'FAILED',
+    },
+    {
+        id: 'op-005',
+        timestamp: NOW - 12 * HOUR,
+        txHash: '0x8F9a0B1c...7e8F9a0B',
+        amountAVAX: 0.00027,
+        amountUSD: 0.01,
+        endpoint: 'chainlink/avax-usd',
+        status: 'SUCCESS',
+    },
+];
+
+export const MOCK_TRADES: TradeRecord[] = [
+    {
+        id: 't-001',
+        timestamp: NOW - 1.2 * HOUR,
+        pair: 'AVAX/USDC',
+        side: 'SELL',
+        amountIn: 4.8,
+        amountOut: 177.60,
+        tokenIn: 'AVAX',
+        tokenOut: 'USDC',
+        priceUSD: 37.00,
+        status: 'CONFIRMED',
+        txHash: '0x7f3a9bC4E21d8A5c6B0F2e7D9f4a1b3E8c6D5a2F1234567890abcdef',
+        pnlBps: 42,
+    },
+    {
+        id: 't-002',
+        timestamp: NOW - 5 * HOUR,
+        pair: 'AVAX/USDC',
+        side: 'BUY',
+        amountIn: 116.48,
+        amountOut: 3.2,
+        tokenIn: 'USDC',
+        tokenOut: 'AVAX',
+        priceUSD: 36.40,
+        status: 'CONFIRMED',
+        txHash: '0xaB3c4D5e6F7a8B9c0D1e2F3a4B5c6D7e8F9a0B1c2D3e4F5a6B7c8D9e0F1a2B',
+        pnlBps: -15,
+    },
+    {
+        id: 't-003',
+        timestamp: NOW - 18 * HOUR,
+        pair: 'AVAX/USDC',
+        side: 'SELL',
+        amountIn: 2.1,
+        amountOut: 75.81,
+        tokenIn: 'AVAX',
+        tokenOut: 'USDC',
+        priceUSD: 36.10,
+        status: 'CONFIRMED',
+        txHash: '0x1D2e3F4a5B6c7D8e9F0a1B2c3D4e5F6a7B8c9D0e1F2a3B4c5D6e7F8a9B0c1D',
+        pnlBps: 88,
+    },
+    {
+        id: 't-004',
+        timestamp: NOW - 36 * HOUR,
+        pair: 'AVAX/USDC',
+        side: 'BUY',
+        amountIn: 200.00,
+        amountOut: 5.71,
+        tokenIn: 'USDC',
+        tokenOut: 'AVAX',
+        priceUSD: 35.02,
+        status: 'CONFIRMED',
+        txHash: '0x4B5c6D7e8F9a0B1c2D3e4F5a6B7c8D9e0F1a2B3c4D5e6F7a8B9c0D1e2F3a4B',
+        pnlBps: 120,
+    },
+    {
+        id: 't-005',
+        timestamp: NOW - 48 * HOUR,
+        pair: 'AVAX/USDC',
+        side: 'SELL',
+        amountIn: 6.5,
+        amountOut: 227.50,
+        tokenIn: 'AVAX',
+        tokenOut: 'USDC',
+        priceUSD: 35.00,
+        status: 'CONFIRMED',
+        txHash: '0x8F9a0B1c2D3e4F5a6B7c8D9e0F1a2B3c4D5e6F7a8B9c0D1e2F3a4B5c6D7e8F',
+        pnlBps: -8,
+    },
+];
+
+export const MOCK_REPUTATION: ReputationData = {
+    score: 847,
+    maxScore: 1000,
+    totalTrades: 142,
+    successRate: 96.5,
+    history: [
+        { timestamp: NOW - 7 * 24 * HOUR, score: 780 },
+        { timestamp: NOW - 6 * 24 * HOUR, score: 795 },
+        { timestamp: NOW - 5 * 24 * HOUR, score: 810 },
+        { timestamp: NOW - 4 * 24 * HOUR, score: 818 },
+        { timestamp: NOW - 3 * 24 * HOUR, score: 825 },
+        { timestamp: NOW - 2 * 24 * HOUR, score: 838 },
+        { timestamp: NOW - 1 * 24 * HOUR, score: 842 },
+        { timestamp: NOW, score: 847 },
+    ],
+};
+
+export const MOCK_TICKER_ITEMS: TickerItem[] = [
+    { label: 'AVAX/USD', value: '$37.00', color: '#4ade80' },
+    { label: 'PORTFOLIO', value: '$5,006.84' },
+    { label: 'DRIFT', value: '0.56%', color: '#4ade80' },
+    { label: 'TRADES_TODAY', value: '3/10' },
+    { label: 'AGENT', value: 'ACTIVE', color: '#4ade80' },
+    { label: 'LAST_REBALANCE', value: '1h 12m' },
+    { label: 'ORACLE_FEE', value: '$0.01' },
+    { label: 'ERC-8004_SCORE', value: '847' },
+    { label: 'BLOCK', value: '#48,291,037' },
+    { label: 'DRAWDOWN', value: '-2.78%', color: '#fbbf24' },
+    { label: 'ALLOC', value: '50.6/49.4' },
+    { label: 'GAS', value: '25 nAVAX' },
+];
