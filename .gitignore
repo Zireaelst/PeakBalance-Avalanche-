@@ -1,0 +1,42 @@
+# ═══ Node / Next.js ═══
+node_modules/
+.next/
+out/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# ═══ Foundry ═══
+contracts/out/
+contracts/cache/
+contracts/lib/
+
+# ═══ Python ═══
+agent/__pycache__/
+agent/*.pyc
+agent/.venv/
+agent/venv/
+
+# ═══ Environment ═══
+.env
+.env.local
+.env.production
+.env.*.local
+
+# ═══ IDE ═══
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ═══ Build ═══
+dist/
+build/
+*.log
+npm-debug.log*
+
+# ═══ Misc ═══
+coverage/
+.vercel/
