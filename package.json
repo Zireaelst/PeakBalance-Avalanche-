@@ -1,0 +1,24 @@
+{
+    "name": "peakbalance-avalanche",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Autonomous DeFi portfolio manager on Avalanche C-Chain",
+    "scripts": {
+        "dev": "cd peakbalance-dashboard && npm run dev",
+        "build": "cd peakbalance-dashboard && npm run build",
+        "lint": "cd peakbalance-dashboard && npm run lint",
+        "agent": "cd agent && python agent.py",
+        "forge:build": "cd contracts && forge build",
+        "forge:test": "cd contracts && forge test -vvv",
+        "forge:deploy:fuji": "cd contracts && forge script script/Deploy.s.sol --rpc-url fuji --broadcast"
+    },
+    "keywords": [
+        "avalanche",
+        "defi",
+        "ai-agent",
+        "portfolio-manager",
+        "erc-8004",
+        "x402"
+    ],
+    "license": "MIT"
+}
