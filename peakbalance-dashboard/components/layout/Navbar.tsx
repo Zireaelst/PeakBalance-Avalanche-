@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PulseDot } from '@/components/ui/PulseDot';
-import { Btn } from '@/components/ui/Btn';
 const TABS = [{ href: '/dashboard', label: 'DASHBOARD' }, { href: '/agent', label: 'AGENT' }, { href: '/trades', label: 'TRADES' }, { href: '/marketplace', label: 'MARKETPLACE' }, { href: '/earnings', label: 'EARNINGS' }, { href: '/settings', label: 'SETTINGS' }];
+const DEMO_ADDR = '0x6602...4aDD';
 export function Navbar() {
     const path = usePathname();
     return (
@@ -20,8 +20,11 @@ export function Navbar() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <PulseDot color="#4ade80" size={6} />
-                <span style={{ fontSize: 9, color: '#4ade80', letterSpacing: '0.1em', fontFamily: "'JetBrains Mono', monospace" }}>C-Chain</span>
-                <Btn>CONNECT WALLET</Btn>
+                <span style={{ fontSize: 9, color: '#4ade80', letterSpacing: '0.1em', fontFamily: "'JetBrains Mono', monospace" }}>Fuji C-Chain</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, border: '1px solid #4ade80', padding: '4px 12px' }}>
+                    <span style={{ width: 6, height: 6, background: '#4ade80', display: 'inline-block' }} />
+                    <span style={{ fontSize: 10, color: '#4ade80', letterSpacing: '0.1em', fontFamily: "'JetBrains Mono', monospace", fontWeight: 700 }}>{DEMO_ADDR}</span>
+                </div>
             </div>
         </nav>
     );
