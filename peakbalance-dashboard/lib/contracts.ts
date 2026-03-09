@@ -2,11 +2,11 @@
 // Fuji testnet addresses — replace after deployment
 export const CONTRACTS = {
     43113: {
-        peakController: '0x0000000000000000000000000000000000000000' as `0x${string}`,
-        peakVault: '0x0000000000000000000000000000000000000000' as `0x${string}`,
-        constraintEngine: '0x0000000000000000000000000000000000000000' as `0x${string}`,
-        agentRegistry: '0x0000000000000000000000000000000000000000' as `0x${string}`,
-        oracleConsumer: '0x0000000000000000000000000000000000000000' as `0x${string}`,
+        peakController: '0x7cC8c5f8b41198b95185a39e365E8FB4aBae59df' as `0x${string}`,
+        peakVault: '0x9C12C19B00cAA9c7c23383F399924d26A0E06fDc' as `0x${string}`,
+        constraintEngine: '0xD257737006c06C99709513A0491D585D5689316b' as `0x${string}`,
+        agentRegistry: '0xab8Fa229B57513d3EB11549AC4641FF1F4f469a3' as `0x${string}`,
+        oracleConsumer: '0x9ccDEb0D1b28BbB05C5BD46c046E19c06a81E261' as `0x${string}`,
         usdc: '0x5425890298aed601595a70AB815c96711a31Bc65' as `0x${string}`, // Fuji USDC
         wavax: '0xd00ae08403B9bbb9124bB305C09058E32C39A48c' as `0x${string}`, // Fuji WAVAX
     },

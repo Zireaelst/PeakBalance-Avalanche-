@@ -3,9 +3,10 @@ import { MOCK_AGENTS } from '@/lib/mock-data';
 
 export async function GET(
     _req: Request,
-    { params }: { params: { agentId: string } }
+    { params }: { params: Promise<{ agentId: string }> }
 ) {
-    const agent = MOCK_AGENTS.find(a => a.id === params.agentId);
+    const { agentId } = await params;
+    const agent = MOCK_AGENTS.find(a => a.id === Number(agentId));
     if (!agent) {
         return NextResponse.json({ error: 'AGENT_NOT_FOUND' }, { status: 404 });
     }

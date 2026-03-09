@@ -1,0 +1,58 @@
+{
+  "network": "Avalanche Fuji Testnet",
+  "chainId": 43113,
+  "deployer": "0x6602130E170195670407CeE93932C1B0b9454aDD",
+  "deployedAt": "2026-03-09",
+  "contracts": {
+    "ConstraintEngine": {
+      "address": "0xD257737006c06C99709513A0491D585D5689316b",
+      "txHash": "0xae5fd6685f2cac706fe3e1b738cdb2aba3458d9e5e13d10400004d3bd9ec116e"
+    },
+    "AgentRegistry": {
+      "address": "0xab8Fa229B57513d3EB11549AC4641FF1F4f469a3",
+      "txHash": "0xc47ccb53338ebd774593afbe0ea177ba4b23c4cea2be4c4b687a4011e1a9b847"
+    },
+    "OracleConsumer": {
+      "address": "0x9ccDEb0D1b28BbB05C5BD46c046E19c06a81E261",
+      "txHash": "0xa529919e5daf585b9899afa8ee9cd7367c39bc44195aef926ff0f654f39bd37a"
+    },
+    "PeakVault": {
+      "address": "0x9C12C19B00cAA9c7c23383F399924d26A0E06fDc",
+      "txHash": "0x399a86a42bb1a5295325f256515f92fcab8c554a7b70598ce7a79c81db90c1bb"
+    },
+    "PeakController": {
+      "address": "0x7cC8c5f8b41198b95185a39e365E8FB4aBae59df",
+      "txHash": "0x4e2622682414b19cf7b4fdb39fb2d0b1d62d4b16fd288a5d453c48790b666aeb"
+    },
+    "ReputationAggregator": {
+      "address": "0xA4beE80EA6352dC1D5CbD83578af2448dfD459C0",
+      "txHash": "0xfac4bbb5c057b4df18ac01f6b992e40f5ed9481327640591fb2143da37df8593"
+    },
+    "FeeDistributor": {
+      "address": "0x8c85D2b2A6B4fc3aD1Ef7F03211Df65A212ce013",
+      "txHash": "0x9a8bc6627f3a766db699d4ce448e10dc33aa3528ffd82d76569563231bd847c0"
+    },
+    "StakingVault": {
+      "address": "0x2249952027B949f60b68772e33a029E22857e7AB",
+      "txHash": "0x0566e99a6b15fe3545fc1d72aebea77908c61419080b9b1c2e4006389bcb38f3"
+    },
+    "AgentMarketplace": {
+      "address": "0xdB045ac6bA8d7903fD3a566bFBf208955481dA49",
+      "txHash": "0x994b1e98547cdac36c6123f07bd46c39459ec4a22fa56da118b212c63296d650"
+    }
+  },
+  "externalAddresses": {
+    "USDC": "0x5425890298aed601595a70AB815c96711a31Bc65",
+    "WAVAX": "0xd00ae08403B9bbb9124bB305C09058E32C39A48c",
+    "TraderJoeLBRouter": "0xb4315e873dBcf96Ffd0acd8EA43f689D8c20fB30"
+  },
+  "wiring": {
+    "Marketplace.reputationAggregator": "0xA4beE80EA6352dC1D5CbD83578af2448dfD459C0",
+    "Marketplace.feeDistributor": "0x8c85D2b2A6B4fc3aD1Ef7F03211Df65A212ce013",
+    "ReputationAggregator.controller": "0x7cC8c5f8b41198b95185a39e365E8FB4aBae59df",
+    "ReputationAggregator.marketplace": "0xdB045ac6bA8d7903fD3a566bFBf208955481dA49",
+    "FeeDistributor.marketplace": "0xdB045ac6bA8d7903fD3a566bFBf208955481dA49",
+    "FeeDistributor.controller": "0x7cC8c5f8b41198b95185a39e365E8FB4aBae59df",
+    "AgentRegistry.reputationAggregator": "0xA4beE80EA6352dC1D5CbD83578af2448dfD459C0"
+  }
+}
