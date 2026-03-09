@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PulseDot } from '@/components/ui/PulseDot';
 import { Btn } from '@/components/ui/Btn';
-const TABS = [{ href: '/dashboard', label: 'DASHBOARD' }, { href: '/agent', label: 'AGENT' }, { href: '/trades', label: 'TRADES' }, { href: '/settings', label: 'SETTINGS' }];
+const TABS = [{ href: '/dashboard', label: 'DASHBOARD' }, { href: '/agent', label: 'AGENT' }, { href: '/trades', label: 'TRADES' }, { href: '/marketplace', label: 'MARKETPLACE' }, { href: '/earnings', label: 'EARNINGS' }, { href: '/settings', label: 'SETTINGS' }];
 export function Navbar() {
     const path = usePathname();
     return (

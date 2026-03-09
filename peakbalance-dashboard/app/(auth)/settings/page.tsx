@@ -1,10 +1,11 @@
 'use client';
+import Link from 'next/link';
 import { SectionLabel } from '@/components/ui/SectionLabel';
 import { ConstraintBar } from '@/components/ui/ConstraintBar';
 import { Tag } from '@/components/ui/Tag';
 import { Btn } from '@/components/ui/Btn';
 import { Divider } from '@/components/ui/Divider';
-import { MOCK_CONSTRAINTS } from '@/lib/mock-data';
+import { MOCK_CONSTRAINTS, MOCK_MY_SUBSCRIPTION, TIER_CONFIG } from '@/lib/mock-data';
 export default function SettingsPage() {
     const c = MOCK_CONSTRAINTS;
     return (
@@ -47,6 +48,60 @@ export default function SettingsPage() {
                 <SectionLabel label="AGENT_CONTROLS" />
                 <div style={{ display: 'flex', gap: 8, marginTop: 8 }}><Btn>▮▮ PAUSE AGENT</Btn><Btn variant="success">▶ RESUME AGENT</Btn><Btn variant="danger">⚠ EMERGENCY EXIT</Btn></div>
                 <div style={{ marginTop: 12, fontSize: 9, color: '#444444', fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.6 }}>PAUSE: Agent stops monitoring. Can resume anytime.<br />EMERGENCY EXIT: Immediately exits all positions. Cannot be undone.</div>
+            </div>
+            <Divider char="═" />
+            <MySubscriptionPanel />
+        </div>
+    );
+}
+
+function MySubscriptionPanel() {
+    const sub = MOCK_MY_SUBSCRIPTION;
+    if (!sub) {
+        return (
+            <div style={{ background: '#161616', padding: '14px 16px' }}>
+                <SectionLabel label="MARKETPLACE_SUBSCRIPTION" />
+                <div style={{ marginTop: 12, fontSize: 10, color: '#888', fontFamily: "'JetBrains Mono', monospace" }}>
+                    No active marketplace subscription.{' '}
+                    <Link href="/marketplace" style={{ color: '#22d3ee' }}>Browse agents →</Link>
+                </div>
+            </div>
+        );
+    }
+    const tc = TIER_CONFIG[sub.tier];
+    return (
+        <div style={{ background: '#161616', padding: '14px 16px' }}>
+            <SectionLabel label="MARKETPLACE_SUBSCRIPTION" />
+            <div style={{ marginTop: 12, border: '1px solid #2a2a2a', background: '#0a0a0a' }}>
+                <div style={{ padding: '12px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #2a2a2a' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div style={{ fontSize: 20 }}>{sub.agentEmoji}</div>
+                        <div>
+                            <div style={{ fontSize: 11, fontWeight: 700, color: '#e8e8e8', fontFamily: "'JetBrains Mono', monospace" }}>{sub.agentName}</div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 3 }}>
+                                <span style={{ fontSize: 8, fontWeight: 700, letterSpacing: '.15em', padding: '2px 5px', background: tc.bg, color: tc.color, border: `1px solid ${tc.color}40` }}>{sub.tier}</span>
+                                <span style={{ fontSize: 9, color: '#4ade80' }}>ACTIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                        <Link href={`/marketplace/${sub.agentId}`} style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, letterSpacing: '.12em', textTransform: 'uppercase', padding: '6px 10px', border: '1px solid #2a2a2a', color: '#888', textDecoration: 'none' }}>VIEW AGENT</Link>
+                        <button style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, letterSpacing: '.12em', textTransform: 'uppercase', padding: '6px 10px', border: '1px solid #f8717144', color: '#f87171', background: 'transparent' }}>UNSUBSCRIBE</button>
+                    </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1, background: '#2a2a2a' }}>
+                    {[
+                        { l: 'ERC-8004 SCORE', v: `${sub.score}`, c: tc.color },
+                        { l: 'SUB FEE', v: sub.subFee > 0 ? `$${sub.subFee}/mo` : 'FREE', c: '#22d3ee' },
+                        { l: 'PERF FEE', v: sub.perfFee > 0 ? `${sub.perfFee.toFixed(1)}%` : 'NONE', c: '#fbbf24' },
+                        { l: 'SUBSCRIBED', v: new Date(sub.subscribedAt).toLocaleDateString(), c: '#888' },
+                    ].map(s => (
+                        <div key={s.l} style={{ background: '#0a0a0a', padding: '10px 12px' }}>
+                            <div style={{ fontSize: 8, color: '#444', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 4 }}>{s.l}</div>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: s.c, fontFamily: "'JetBrains Mono', monospace" }}>{s.v}</div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
