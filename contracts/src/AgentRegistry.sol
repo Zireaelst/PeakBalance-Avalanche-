@@ -132,4 +132,20 @@ contract AgentRegistry {
     function totalSupply() external view returns (uint256) {
         return _nextTokenId - 1;
     }
+
+    // ═══ MARKETPLACE INTEGRATION ═══
+
+    address public reputationAggregator;
+    address public immutable registryAdmin = msg.sender;
+
+    event ReputationAggregatorSet(address indexed ra);
+
+    error NotRegistryAdmin();
+
+    /// @notice Set the ReputationAggregator address. One-time wiring after deployment.
+    function setReputationAggregator(address ra) external {
+        if (msg.sender != registryAdmin) revert NotRegistryAdmin();
+        reputationAggregator = ra;
+        emit ReputationAggregatorSet(ra);
+    }
 }
