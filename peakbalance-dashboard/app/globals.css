@@ -16,7 +16,9 @@
     --color-gold: #fbbf24;
     --color-gold-dim: #3d2e0a;
     --color-teal: #22d3ee;
+    --color-teal-dim: #0a2d33;
     --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    --font-sans: 'Space Grotesk', sans-serif;
 }
 
 *,
@@ -26,10 +28,15 @@
     cursor: crosshair !important;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background: #0a0a0a;
     color: #e8e8e8;
     font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -37,7 +44,7 @@ body::after {
     content: '';
     position: fixed;
     inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.025) 2px, rgba(0, 0, 0, 0.025) 4px);
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.022) 2px, rgba(0, 0, 0, 0.022) 4px);
     pointer-events: none;
     z-index: 9999;
 }
@@ -83,6 +90,30 @@ body::after {
     background: #111111 !important;
 }
 
+.dh {
+    position: relative;
+    transition: background 0.12s;
+}
+
+.dh::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: 0;
+    transition: opacity 0.18s;
+    pointer-events: none;
+}
+
+.dh:hover::after {
+    opacity: 1;
+}
+
+.dh:hover {
+    background: #111111 !important;
+}
+
 @keyframes ticker {
     0% {
         transform: translateX(0);
@@ -101,7 +132,19 @@ body::after {
     }
 
     50% {
-        opacity: 0.2;
+        opacity: 0.15;
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -117,6 +160,16 @@ body::after {
     }
 }
 
+@keyframes fadeInStatic {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 @keyframes blink {
 
     0%,
@@ -129,8 +182,62 @@ body::after {
     }
 }
 
+@keyframes matrixRain {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 0.9;
+    }
+}
+
+@keyframes scanMove {
+    0% {
+        top: -2px;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
 .animate-ticker {
-    animation: ticker 60s linear infinite;
+    animation: ticker 55s linear infinite;
 }
 
 .animate-pulse-dot {
